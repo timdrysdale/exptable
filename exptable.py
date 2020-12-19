@@ -59,15 +59,13 @@ def exptable(points, down, up):
     )
     return writer.dumps()
 
-if __name__ == "__main__":
-
-    # save intro figure(s)
-   
+def intro_plots():
+    #expo settings
     rate_count = 5
     up_rates = np.linspace(0,100,rate_count)
     x_list = np.linspace(-100,100,100)
     
-    fig = plt.figure()
+    plt.figure()
        
     for rate in up_rates:
         y_list = []
@@ -85,7 +83,6 @@ if __name__ == "__main__":
     plt.savefig("./img/expo.png",dpi=150)
     
     #split exponential
-    fig = plt.figure()
     down = 15
     up = 25
     y_list = []
@@ -114,7 +111,7 @@ if __name__ == "__main__":
     up_rates = np.linspace(0,100,rate_count)
     x_list = np.linspace(-100,100,100)
     
-    fig = plt.figure()
+    plt.figure()
        
     for rate in up_rates:
         y_list = []
@@ -131,7 +128,48 @@ if __name__ == "__main__":
     plt.legend()
     plt.savefig("./img/expo5.png",dpi=150)
     
-    # add tables to readme
+def intro_example():
+    #split exponential
+    x_list = np.linspace(-100,100,100)
+    plt.figure()
+    down = 15
+    up = 25
+    y_list = []
+    for x in x_list:
+       y_list.append(split_exp(x,down,up))
+    plt.plot(x_list,y_list,label="-%d+%d"%(down,up))
+    
+    x_list = np.linspace(-100,100,7)
+    y_list = []
+    for x in x_list:
+       y_list.append(split_exp(x,down,up))
+    plt.plot(x_list,y_list,'o',label="curve points")
+            
+    ax = plt.gca()
+    ax.set_aspect('equal')   
+    plt.ylim([-110,110])
+    plt.xlim([-110,110])
+    plt.xlabel("Stick position (%)")
+    plt.ylabel("Output position (%)")
+    plt.legend()
+    
+    plt.savefig("./img/usage.png",dpi=150)
+
+def intro_table():
+  
+    print(exptable(7, 15, 25))
+    print(exptable(7, 50, 75))
+
+if __name__ == "__main__":
+
+    # make intro figure(s)
+    intro_plots()
+    
+    intro_table()
+    
+    intro_example()
+        
+    # add tables to readme - copy intro into readme
     rate_count = 5
     up_rates = np.linspace(0,100,rate_count)
     down_rates = np.linspace(0,100,rate_count)  
@@ -141,6 +179,12 @@ if __name__ == "__main__":
         for line in f:
             file.write(line)
         f.close()
-        
+
+        up_list = np.linspace(0,50,11)     
+        down_list = up_list
+        for down in down_list:
+            for up in up_list:
+                file.write(exptable(7, down, up))    
+
         
         
